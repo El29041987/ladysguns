@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkSpace — e-commerce портал</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+body{font-size:13px;background:#f8f7ff;color:#1a1a2e}
+.portal{display:flex;height:100vh;overflow:hidden}
+.sb{width:210px;background:#f0effe;border-right:1px solid #e0dcff;display:flex;flex-direction:column;flex-shrink:0;transition:transform .25s}
+.lb{background:#534AB7;border-radius:8px;padding:9px 12px;margin:12px}
+.lb-t{color:#EEEDFE;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px}
+.lb-s{color:#AFA9EC;font-size:10px;margin-top:2px;padding-left:4px}
+#snav{flex:1;padding:5px;overflow-y:auto}
+.ua{padding:9px 12px;border-top:1px solid #e0dcff;display:flex;align-items:center;gap:8px;cursor:pointer}
+.ua:hover{background:#e8e4ff}
+#ca{flex:1;overflow-y:auto;background:#fff;min-width:0}
+#ct{padding:16px}
+.n1,.n2,.n3{display:flex;align-items:center;cursor:pointer;border-radius:7px;margin-bottom:1px;color:#6b7280;user-select:none}
+.n1{gap:8px;padding:7px 10px;font-size:12px}
+.n2{gap:7px;padding:5px 10px 5px 22px;font-size:11px}
+.n3{gap:5px;padding:4px 10px 4px 38px;font-size:11px}
+.n1:hover,.n2:hover,.n3:hover{background:#fff;color:#1a1a2e}
+.nac{background:#fff!important;color:#534AB7!important;font-weight:600!important}
+.nsep{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:#9ca3af;padding:7px 22px 3px;font-weight:500}
+.sbd{background:#E24B4A;color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:auto;font-weight:500}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;flex-shrink:0}
+.tag{font-size:10px;padding:2px 7px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;flex-wrap:wrap;gap:8px}
+.ph-t{font-size:15px;font-weight:600;color:#1a1a2e}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:13px}
+.sc{background:#f8f7ff;border-radius:8px;padding:11px}
+.sc-v{font-size:18px;font-weight:600;margin:4px 0 2px}
+.sc-l{font-size:10px;color:#6b7280}
+.tabs{display:flex;border-bottom:1px solid #e5e7eb;margin-bottom:12px;flex-wrap:wrap}
+.tbi{padding:7px 14px;font-size:12px;cursor:pointer;color:#6b7280;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tbi.on{color:#534AB7;border-bottom-color:#534AB7;font-weight:600}
+.cw{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.cm{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.msg{display:flex;gap:7px}.msg.me{flex-direction:row-reverse}
+.bub{padding:7px 10px;border-radius:14px;font-size:12px;max-width:75%;line-height:1.5}
+.bo{background:#f8f7ff;color:#1a1a2e}.bm{background:#534AB7;color:#EEEDFE}
+.ma{font-size:10px;color:#9ca3af;margin-bottom:2px}
+.mt{font-size:10px;color:#9ca3af;margin-top:2px}
+.cb{display:flex;gap:7px;padding:8px 10px;border-top:1px solid #e5e7eb;flex-shrink:0}
+.cb input{flex:1;font-size:12px;border:1px solid #e5e7eb;border-radius:7px;padding:6px 10px;outline:none}
+.cb input:focus{border-color:#534AB7}
+button{background:#f0effe;color:#534AB7;border:1px solid #d4d0ff;border-radius:7px;padding:6px 12px;cursor:pointer;font-size:12px;font-family:inherit}
+button:hover{background:#e8e4ff}
+.sbtn{background:#534AB7;color:#EEEDFE;border:none;border-radius:7px;padding:0 12px;cursor:pointer;font-size:13px;height:34px}
+.trow{display:flex;align-items:center;gap:9px;padding:9px 13px;border-bottom:1px solid #f3f4f6}
+.trow:hover{background:#fafafa}
+.trow:last-child{border-bottom:none}
+.tth{font-size:10px;font-weight:500;color:#9ca3af;padding:6px 13px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:9px;background:#fafafa}
+.ai-btn{background:#534AB7;color:#EEEDFE;border:none;border-radius:7px;padding:5px 11px;cursor:pointer;font-size:11px;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
+.ai-btn:hover{background:#3C3489}
+.ai-spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#EEEDFE;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.rv-card{border:1px solid #e5e7eb;border-radius:10px;padding:12px;margin-bottom:9px}
+.rv-card:hover{border-color:#d4d0ff}
+.k-col{background:#f8f7ff;border-radius:10px;padding:11px}
+.k-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:9px;margin-bottom:6px;cursor:pointer}
+.k-card:hover{border-color:#d4d0ff}
+input[type=text],textarea{font-family:inherit}
+/* Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:12px;padding:20px;width:380px;max-width:90vw}
+.modal h3{font-size:14px;font-weight:600;margin-bottom:14px;color:#1a1a2e}
+.modal label{font-size:11px;color:#6b7280;display:block;margin-bottom:3px;margin-top:10px}
+.modal input,.modal textarea,.modal select{width:100%;border:1px solid #e5e7eb;border-radius:7px;padding:7px 10px;font-size:12px;outline:none;font-family:inherit}
+.modal input:focus,.modal textarea:focus,.modal select:focus{border-color:#534AB7}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.btn-cancel{background:#f3f4f6;color:#6b7280;border:none}
+.btn-save{background:#534AB7;color:#fff;border:none}
+/* Mobile */
+.mob-topbar{display:none;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #e0dcff;background:#f0effe;flex-shrink:0}
+.hamburger{background:#fff;border:1px solid #e0dcff;border-radius:7px;padding:6px 10px;cursor:pointer;font-size:16px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:30}
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:54px;background:#f0effe;border-top:1px solid #e0dcff;z-index:20;justify-content:space-around;align-items:center}
+.mob-nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 10px;border-radius:7px;color:#6b7280;font-size:10px;background:none;border:none}
+.mob-nav-btn.on{color:#534AB7;font-weight:600}
+@media(max-width:640px){
+  .portal{flex-direction:column}
+  .sb{position:fixed;top:0;left:0;bottom:0;z-index:40;transform:translateX(-100%);width:230px}
+  .sb.open{transform:translateX(0)}
+  .mob-topbar{display:flex}
+  #ca{padding-bottom:60px}
+  .mob-nav{display:flex}
+  .overlay{z-index:35}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(2,1fr)}
+  .tth,.trow{font-size:10px}
+}
+</style>
+</head>
+<body>
+<div class="portal">
+
+<!-- SIDEBAR -->
+<div class="sb" id="sb">
+  <div>
+    <div class="lb">
+      <div class="lb-t">🏪 WorkSpace</div>
+      <div class="lb-s">e-commerce команда</div>
+    </div>
+  </div>
+  <div id="snav"></div>
+  <div class="ua" onclick="go('prof',false)">
+    <div class="av" style="width:28px;height:28px;background:#CECBF6;color:#3C3489;font-size:10px">АП</div>
+    <div>
+      <div style="font-size:11px;font-weight:600;color:#1a1a2e">Алексей Петров</div>
+      <div style="font-size:10px;color:#1D9E75">● Онлайн</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="ca" style="flex:1;overflow-y:auto;background:#fff;min-width:0;display:flex;flex-direction:column">
+  <div class="mob-topbar">
+    <div style="font-size:13px;font-weight:600;color:#1a1a2e" id="mob-title">WorkSpace</div>
+    <button class="hamburger" onclick="toggleSB()">☰</button>
+  </div>
+  <div id="ct" style="padding:16px;flex:1"></div>
+  <div class="mob-nav">
+    <button class="mob-nav-btn" onclick="go('sup-dash',false);mobAct(this)">📊<span>Остатки</span></button>
+    <button class="mob-nav-btn" onclick="go('rv-reviews',false);mobAct(this)">⭐<span>Отзывы</span></button>
+    <button class="mob-nav-btn" onclick="go('taskhub',false);mobAct(this)">🎯<span>Задачи</span></button>
+    <button class="mob-nav-btn" onclick="go('notif',false);mobAct(this)">🔔<span>Уведом.</span></button>
+    <button class="mob-nav-btn" onclick="go('prof',false);mobAct(this)">👤<span>Профиль</span></button>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeSB()"></div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3 id="modal-title">Добавить</h3>
+    <div id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Отмена</button>
+      <button class="btn-save" onclick="saveModal()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────
+const avC=['#CECBF6:#3C3489','#9FE1CB:#085041','#F5C4B3:#712B13','#F4C0D1:#72243E','#B5D4F4:#0C447C','#C0DD97:#27500A'];
+const emps=[{in:'АП',nm:'Алексей Петров',role:'Руководитель',dept:'Управление',online:true},
+  {in:'МИ',nm:'Мария Иванова',role:'Менеджер по рекламе',dept:'Маркетинг',online:true},
+  {in:'ДС',nm:'Дмитрий Соколов',role:'Спец. по поставкам',dept:'Логистика',online:false},
+  {in:'АК',nm:'Анна Козлова',role:'Контент-менеджер',dept:'Контент',online:true},
+  {in:'ИН',nm:'Иван Новиков',role:'Аналитик',dept:'Аналитика',online:false},
+  {in:'ЕМ',nm:'Елена Морозова',role:'Менеджер по отзывам',dept:'Продажи',online:true}];
+const chs={wb:{l:'WB',bg:'#FBEAF0',fg:'#993556'},ozon:{l:'Ozon',bg:'#E6F1FB',fg:'#185FA5'},ym:{l:'ЯМ',bg:'#FAEEDA',fg:'#854F0B'},lamoda:{l:'Lamoda',bg:'#F1EFE8',fg:'#2C2C2A'}};
+const gm=id=>chs[id]||{l:id||'—',bg:'#F1EFE8',fg:'#5F5E5A'};
+const mT=id=>{const m=gm(id);return`<span class="tag" style="background:${m.bg};color:${m.fg}">${m.l}</span>`};
+const avE=(i,s)=>{const[bg,fg]=avC[i%avC.length].split(':');return`<div class="av" style="width:${s}px;height:${s}px;background:${bg};color:${fg};font-size:${Math.round(s*.38)}px">${emps[i]?.in||'?'}</div>`};
+const mH=m=>{const i=emps.findIndex(e=>e.in===m.in);const[bg,fg]=avC[Math.max(0,i)%avC.length].split(':');return`<div class="msg${m.me?' me':''}"><div class="av" style="width:22px;height:22px;background:${m.me?'#CECBF6':bg};color:${m.me?'#3C3489':fg};font-size:8px;flex-shrink:0">${m.in}</div><div>${!m.me?`<div class="ma">${m.au}</div>`:''}<div class="bub ${m.me?'bm':'bo'}">${m.tx}</div><div class="mt" style="text-align:${m.me?'right':'left'}">${m.tm}</div></div></div>`};
+const sb=(st,map)=>{const[bg,fg,l]=map[st]||['#F1EFE8','#5F5E5A',st];return`<span class="tag" style="background:${bg};color:${fg}">${l}</span>`};
+
+let msgs={
+  'wb-msk':[{au:'Дмитрий Соколов',in:'ДС',tx:'Завтра отгрузка WB-МСК: 320 коробок, 09:00',tm:'10:15',me:false},{au:'Вы',in:'АП',tx:'Документы готовы?',tm:'10:17',me:true},{au:'Дмитрий Соколов',in:'ДС',tx:'Да, всё готово ✓',tm:'10:18',me:false}],
+  'wb-kaz':[{au:'Дмитрий Соколов',in:'ДС',tx:'🚨 WB-Казань: Платье в горошек — 3 шт, критично!',tm:'09:30',me:false},{au:'Вы',in:'АП',tx:'Когда ближайший слот?',tm:'09:35',me:true}],
+  'wb-krd':[],
+  'wb-nsk':[],
+  'ozon-msk':[{au:'Дмитрий Соколов',in:'ДС',tx:'Приёмка ФФ Москва: 29 мая, 95 коробок ✓',tm:'11:00',me:false}],
+  'ozon-kaz':[],
+  'sup-ym':[],
+  'sup-lamoda':[],
+  'sup-plan':[{au:'Дмитрий Соколов',in:'ДС',tx:'Предлагаю сдвинуть WB-Казань на 28 мая',tm:'09:00',me:false},{au:'Вы',in:'АП',tx:'Согласен, оформляй',tm:'09:05',me:true},{au:'Дмитрий Соколов',in:'ДС',tx:'Слот забронирован ✓',tm:'09:10',me:false}],
+  'rv-team':[{au:'Елена Морозова',in:'ЕМ',tx:'Коллеги, 3 негативных на платье в горошек. Есть шаблоны?',tm:'10:15',me:false},{au:'Мария Иванова',in:'МИ',tx:'База знаний → Продажи → Скрипты ответов 📁',tm:'10:18',me:false},{au:'Вы',in:'АП',tx:'Если системная проблема — ставьте задачу на доработку карточки',tm:'10:20',me:true}],
+  'general':[{au:'Мария Иванова',in:'МИ',tx:'Доброе утро! Отличный понедельник!',tm:'09:01',me:false},{au:'Дмитрий Соколов',in:'ДС',tx:'Кто-нибудь видел отчёт по WB за выходные?',tm:'09:05',me:false},{au:'Вы',in:'АП',tx:'Да, уже загрузил в базу знаний 👍',tm:'09:10',me:true}],
+};
+const cmeta={'wb-msk':{t:'WB · Москва и МО'},'wb-kaz':{t:'WB · Казань'},'wb-krd':{t:'WB · Краснодар'},'wb-nsk':{t:'WB · Новосибирск'},'ozon-msk':{t:'Ozon · Москва (ФФ)'},'ozon-kaz':{t:'Ozon · Казань'},'sup-ym':{t:'ЯМ · Поставки'},'sup-lamoda':{t:'Lamoda · Поставки'},'sup-plan':{t:'Планирование поставок'},'rv-team':{t:'Чат команды — Отзывы'},'general':{t:'Общий чат'}};
+
+let returns_=[
+  {id:1,date:'25 мая',art:'WB-123456',nm:'Платье в горошек',mp:'wb',reason:'Не подошёл размер',qty:3,sum:5670,st:'recv'},
+  {id:2,date:'24 мая',art:'OZ-789012',nm:'Блузка шелковая',mp:'ozon',reason:'Брак: зацепка на рукаве',qty:1,sum:2450,st:'proc'},
+  {id:3,date:'23 мая',art:'WB-345678',nm:'Пальто кэмел',mp:'wb',reason:'Не соответствует описанию',qty:2,sum:25800,st:'suppl'},
+  {id:4,date:'22 мая',art:'LM-901234',nm:'Платье коктейльное',mp:'lamoda',reason:'Размер не соответствует',qty:1,sum:5990,st:'disp'},
+  {id:5,date:'21 мая',art:'OZ-567890',nm:'Джинсы прямые',mp:'ozon',reason:'Не подошёл фасон',qty:2,sum:6400,st:'recv'},
+  {id:6,date:'20 мая',art:'YM-456789',nm:'Блузка шелковая',mp:'ym',reason:'Качество не устроило',qty:1,sum:2650,st:'proc'},
+];
+let planning_=[
+  {id:1,mp:'wb',region:'Москва и МО',date:'3 июня',boxes:320,skus:8,st:'approved',ai:2},
+  {id:2,mp:'wb',region:'Казань',date:'5 июня',boxes:180,skus:5,st:'draft',ai:2},
+  {id:3,mp:'ozon',region:'Москва (ФФ)',date:'7 июня',boxes:95,skus:6,st:'approved',ai:2},
+  {id:4,mp:'ym',region:'Общий',date:'8 июня',boxes:60,skus:3,st:'pending',ai:2},
+  {id:5,mp:'lamoda',region:'Москва',date:'10 июня',boxes:85,skus:4,st:'draft',ai:2},
+];
+let defects_=[
+  {id:1,date:'25 мая',batch:'П-2025-05',art:'WB-123456',nm:'Платье в горошек',mp:'wb',qty:2,desc:'Зацепки на правом рукаве',st:'open'},
+  {id:2,date:'20 мая',batch:'П-2025-04',art:'LM-901234',nm:'Пальто кэмел',mp:'lamoda',qty:1,desc:'Кривая строчка на подкладке',st:'supplier'},
+  {id:3,date:'15 мая',batch:'П-2025-04',art:'OZ-789012',nm:'Блузка шелковая',mp:'ozon',qty:3,desc:'Жёлтые пятна на ткани',st:'closed'},
+  {id:4,date:'10 мая',batch:'П-2025-03',art:'WB-890123',nm:'Жакет классический',mp:'wb',qty:1,desc:'Отрывается пуговица',st:'compensated'},
+];
+let discr_=[
+  {id:1,date:'25 мая',supply:'WB-МСК-320',mp:'wb',exp:320,rec:318,diff:-2,reason:'2 коробки повреждены при перевозке',st:'open'},
+  {id:2,date:'20 мая',supply:'OZON-МСК-95',mp:'ozon',exp:95,rec:97,diff:+2,reason:'Лишние 2 единицы включены ошибочно',st:'closed'},
+  {id:3,date:'15 мая',supply:'WB-КАЗ-180',mp:'wb',exp:180,rec:175,diff:-5,reason:'Недостача при пересчёте',st:'open'},
+  {id:4,date:'10 мая',supply:'ЯМ-ОБЩ-60',mp:'ym',exp:60,rec:60,diff:0,reason:'Всё совпало',st:'closed'},
+];
+let reviews_=[
+  {id:1,mp:'wb',rating:5,text:'Отличное качество! Платье соответствует описанию.',buyer:'Анна К.',date:'25 мая',st:'pending'},
+  {id:2,mp:'ozon',rating:2,text:'Размер не соответствует. Заказала M, пришёл S.',buyer:'Мария Л.',date:'24 мая',st:'pending'},
+  {id:3,mp:'lamoda',rating:5,text:'Восхитительное пальто! Качество на уровне.',buyer:'Елена П.',date:'23 мая',st:'pending'},
+  {id:4,mp:'wb',rating:4,text:'Хорошее платье. Небольшая зацепка на рукаве.',buyer:'Сергей В.',date:'21 мая',st:'replied',reply:'Спасибо за отзыв! Приносим извинения за дефект.'},
+];
+let questions_=[
+  {id:1,mp:'wb',text:'Есть ли этот цвет в размере 48?',buyer:'Татьяна С.',date:'25 мая',st:'pending'},
+  {id:2,mp:'ozon',text:'Какой состав ткани у блузки?',buyer:'Наталья М.',date:'24 мая',st:'replied',reply:'Состав: 95% шёлк, 5% эластан.'},
+  {id:3,mp:'lamoda',text:'Когда появится XL пальто кэмел?',buyer:'Ирина К.',date:'23 мая',st:'pending'},
+];
+let tasks_=[
+  {id:1,nm:'Пополнить остатки WB-Казань',mp:'wb',resp:2,dl:'28 мая',st:'todo',proc:'supplies'},
+  {id:2,nm:'Сверка возвратов май Ozon',mp:'ozon',resp:0,dl:'27 мая',st:'ip',proc:'supplies'},
+  {id:3,nm:'Поставка WB-МСК выполнена',mp:'wb',resp:2,dl:'25 мая',st:'done',proc:'supplies'},
+  {id:4,nm:'Ответить на 3 отзыва WB',mp:'wb',resp:5,dl:'26 мая',st:'todo',proc:'reviews'},
+  {id:5,nm:'Настроить автобид артикул 12034',mp:'wb',resp:1,dl:'27 мая',st:'ip',proc:'marketing'},
+  {id:6,nm:'SEO-карточки 5 новинок',mp:'ozon',resp:3,dl:'30 мая',st:'todo',proc:'content'},
+];
+let notifs_=[
+  {id:1,tp:'task',tx:'Дмитрий Соколов: Остатки WB-Казань критические!',tm:'5 мин назад',rd:false},
+  {id:2,tp:'message',tx:'Анна Козлова: CTR по рекламе WB резко упал',tm:'15 мин назад',rd:false},
+  {id:3,tp:'task',tx:'Напоминание: сверка возвратов Ozon — сегодня дедлайн',tm:'1 час назад',rd:false},
+  {id:4,tp:'document',tx:'В базу знаний добавлен «Гайд по рекламе WB»',tm:'2 часа назад',rd:true},
+  {id:5,tp:'message',tx:'Елена Морозова: 3 новых отзыва требуют ответа',tm:'3 часа назад',rd:true},
+];
+let rvPhase={},rvDrafts={},retF='all',planT='plan';
+
+// ── NAV ───────────────────────────────────────────────────
+const N=[
+  {id:'dash',i:'🏠',l:'Главная'},
+  {id:'supplies',i:'🚚',l:'Управление остатками',x:[
+    {id:'sup-dash',i:'📊',l:'Дашборд'},
+    {type:'sep',l:'Поставки'},
+    {id:'sup-wb',l:'Wildberries',d:'#993556',x:[{id:'wb-msk',l:'Москва и МО'},{id:'wb-kaz',l:'Казань'},{id:'wb-krd',l:'Краснодар'},{id:'wb-nsk',l:'Новосибирск'}]},
+    {id:'sup-ozon',l:'Ozon',d:'#185FA5',x:[{id:'ozon-msk',l:'Москва (ФФ)'},{id:'ozon-kaz',l:'Казань'}]},
+    {id:'sup-ym',l:'Яндекс Маркет',d:'#854F0B'},
+    {id:'sup-lamoda',l:'Lamoda',d:'#2C2C2A'},
+    {type:'sep',l:'Операции'},
+    {id:'sup-returns',i:'↩',l:'Возвраты'},
+    {id:'sup-planning',i:'📅',l:'Планирование поставок'},
+    {id:'sup-defects',i:'⚠',l:'Браки при приёмке'},
+    {id:'sup-discr',i:'≠',l:'Расхождения'},
+    {id:'sup-tasks',i:'✓',l:'Задачи'},
+  ]},
+  {id:'reviews',i:'⭐',l:'Отзывы и вопросы',badge:'rvb',x:[
+    {id:'rv-reviews',i:'⭐',l:'Отзывы'},
+    {id:'rv-questions',i:'❓',l:'Вопросы покупателей'},
+    {id:'rv-team',i:'💬',l:'Чат команды'},
+  ]},
+  {id:'newprod',i:'✨',l:'Новинки'},
+  {id:'marketing',i:'📢',l:'Маркетинг'},
+  {id:'content',i:'📸',l:'Контент'},
+  {id:'taskhub',i:'🎯',l:'Хаб задач'},
+  {id:'chathub',i:'💬',l:'Хаб чатов'},
+  {id:'kb',i:'📚',l:'База знаний'},
+  {id:'notif',i:'🔔',l:'Уведомления',badge:'nb'},
+  {id:'int',i:'🔌',l:'Интеграции'},
+  {id:'prof',i:'👤',l:'Профиль и команда'},
+];
+let ar='sup-dash',exp=new Set(['supplies','reviews']);
+
+function rSB(){
+  function ni(n,lv){
+    if(n.type==='sep')return`<div class="nsep" style="padding-left:${22+lv*14}px">${n.l}</div>`;
+    const ac=ar===n.id,ca=n.x&&n.x.some(s=>ar===s.id||(s.x&&s.x.some(ss=>ar===ss.id))),ex=exp.has(n.id);
+    let h=`<div class="n${Math.min(lv+1,3)}${(ac||ca)?' nac':''}" onclick="go('${n.id}',${!!n.x})">`;
+    if(n.i&&!n.d)h+=`<span style="font-size:${lv===0?14:12}px">${n.i}</span>`;
+    else if(n.d)h+=`<div style="width:${lv===0?7:5}px;height:${lv===0?7:5}px;border-radius:50%;background:${n.d};flex-shrink:0"></div>`;
+    else h+=`<div style="width:14px"></div>`;
+    h+=`<span style="flex:1">${n.l}</span>`;
+    if(n.badge==='rvb'){const uc=reviews_.filter(r=>r.st==='pending').length+questions_.filter(q=>q.st==='pending').length;if(uc)h+=`<span class="sbd">${uc}</span>`;}
+    if(n.badge==='nb'){const uc=notifs_.filter(x=>!x.rd).length;if(uc)h+=`<span class="sbd">${uc}</span>`;}
+    if(n.x)h+=`<span style="font-size:10px;color:#9ca3af;margin-left:2px">${ex?'▲':'▼'}</span>`;
+    h+=`</div>`;
+    if(n.x&&ex)n.x.forEach(c=>{h+=ni(c,lv+1);});
+    return h;
+  }
+  let h='';N.forEach(n=>{h+=ni(n,0);});
+  document.getElementById('snav').innerHTML=h;
+}
+
+function go(id,hasX){
+  ar=id;
+  if(hasX){if(exp.has(id))exp.delete(id);else exp.add(id);}
+  if(id==='supplies'||id==='sup-wb'||id==='sup-ozon'){ar=id==='supplies'?'sup-dash':id==='sup-wb'?'wb-msk':'ozon-msk';}
+  if(id==='reviews')ar='rv-reviews';
+  if(id==='marketing')ar='mkt-wb';
+  rSB();rC();
+  const titles={'sup-dash':'Остатки','rv-reviews':'Отзывы','taskhub':'Задачи','notif':'Уведомления','prof':'Профиль'};
+  const mt=document.getElementById('mob-title');
+  if(mt)mt.textContent=titles[ar]||'WorkSpace';
+  closeSB();
+}
+
+// ── CHAT WIDGET ───────────────────────────────────────────
+const chatW=(cid,h)=>{const m=msgs[cid]||[];return`<div class="cw" style="height:${h||430}px"><div class="cm" id="cmel-${cid}">${m.map(x=>mH(x)).join('')||'<div style="text-align:center;color:#9ca3af;padding:40px;font-size:12px">Нет сообщений</div>'}</div><div class="cb"><input type="text" id="cin-${cid}" placeholder="Написать в ${cmeta[cid]?.t||cid}..." onkeydown="if(event.key==='Enter')sC('${cid}')"><button class="sbtn" onclick="sC('${cid}')">➤</button></div></div>`};
+
+function sC(cid){
+  const i=document.getElementById('cin-'+cid);const tx=i?.value.trim();
+  if(!tx)return;
+  const tm=new Date().toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
+  if(!msgs[cid])msgs[cid]=[];
+  msgs[cid].push({au:'Вы',in:'АП',tx,tm,me:true});
+  i.value='';
+  const el=document.getElementById('cmel-'+cid);
+  if(el){const d=document.createElement('div');d.innerHTML=mH({au:'Вы',in:'АП',tx,tm,me:true});el.appendChild(d.firstChild);el.scrollTop=el.scrollHeight;}
+}
+function sc(){setTimeout(()=>{document.querySelectorAll('.cm').forEach(el=>el.scrollTop=el.scrollHeight);},50);}
+
+// ── CONTENT ROUTER ────────────────────────────────────────
+const supCids=['wb-msk','wb-kaz','wb-krd','wb-nsk','ozon-msk','ozon-kaz','sup-ym','sup-lamoda'];
+const mktCids=['mkt-wb','mkt-ozon','mkt-ym','mkt-lamoda','mkt-tg','mkt-vk','mkt-ig','mkt-site'];
+
+function rC(){
+  const r=ar,el=document.getElementById('ct');
+  if(supCids.includes(r)){el.innerHTML=`<div class="ph"><span class="ph-t">${cmeta[r]?.t||r}</span></div>${chatW(r,490)}`;sc();return;}
+  if(mktCids.includes(r)){el.innerHTML=pMkt(r);return;}
+  const map={
+    'dash':pMain,
+    'sup-dash':pSupDash,'sup-returns':pRet,'sup-defects':pDef,'sup-discr':pDiscr,'sup-tasks':pSupTasks,'sup-planning':pPlan,
+    'rv-reviews':pRev,'rv-questions':pQ,'rv-team':()=>`<div class="ph"><span class="ph-t">Чат команды — Отзывы</span></div>${chatW('rv-team',490)}`,
+    'newprod':pNewProd,'content':pContent,'taskhub':pTaskHub,'chathub':pChatHub,
+    'kb':pKB,'notif':pNotif,'int':pInt,'prof':pProf,
+  };
+  el.innerHTML=(map[r]||(()=>'<div style="padding:40px;text-align:center;color:#9ca3af">🔧 Раздел в разработке</div>'))();
+  sc();
+}
+
+// ── PAGES ─────────────────────────────────────────────────
+function pMain(){
+  const pendRv=reviews_.filter(r=>r.st==='pending').length+questions_.filter(q=>q.st==='pending').length;
+  const myT=tasks_.filter(t=>t.st!=='done');
+  return`<div style="background:#534AB7;border-radius:10px;padding:16px 22px;margin-bottom:13px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:15px;font-weight:600;color:#EEEDFE">Добро пожаловать, Алексей!</div><div style="font-size:11px;color:#AFA9EC;margin-top:3px">26 мая 2026 · WorkSpace</div></div><span style="font-size:38px;opacity:.7">🏪</span></div>
+  <div class="g4" style="margin-bottom:12px">
+    <div class="sc"><div class="sc-v" style="color:#534AB7">${tasks_.filter(t=>t.st!=='done').length}</div><div class="sc-l">Активных задач</div></div>
+    <div class="sc"><div class="sc-v" style="color:#E24B4A">${pendRv}</div><div class="sc-l">Отзывов / вопросов</div></div>
+    <div class="sc"><div class="sc-v" style="color:#EF9F27">${returns_.filter(r=>r.st==='recv'||r.st==='proc').length}</div><div class="sc-l">Активных возвратов</div></div>
+    <div class="sc"><div class="sc-v" style="color:#1D9E75">${notifs_.filter(n=>!n.rd).length}</div><div class="sc-l">Уведомлений</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="card">
+      <div style="font-size:12px;font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">Мои задачи <button onclick="openAddTask()" style="font-size:10px;padding:3px 8px">+ Задача</button></div>
+      ${myT.slice(0,4).map(t=>`<div class="trow" style="padding:7px 0;border-color:#f3f4f6"><span style="flex:1;font-size:12px">${t.nm}</span>${mT(t.mp)}<span style="font-size:10px;color:#9ca3af">${t.dl}</span></div>`).join('')}
+      ${myT.length===0?'<div style="padding:10px;text-align:center;color:#9ca3af;font-size:12px">Все задачи выполнены ✓</div>':''}
+    </div>
+    <div class="card" style="display:flex;flex-direction:column">${chatW('general',260)}</div>
+  </div>`;
+}
+
+function pSupDash(){
+  return`<div style="background:#534AB7;border-radius:10px;padding:16px 22px;margin-bottom:13px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:15px;font-weight:600;color:#EEEDFE">Управление остатками</div><div style="font-size:11px;color:#AFA9EC;margin-top:3px">26 мая 2026</div></div><span style="font-size:38px;opacity:.7">🚚</span></div>
+  <div class="g4" style="margin-bottom:12px">
+    <div class="sc"><div style="font-size:18px">🚛</div><div class="sc-v" style="color:#185FA5">3</div><div class="sc-l">Поставок в пути</div></div>
+    <div class="sc"><div style="font-size:18px">↩</div><div class="sc-v" style="color:#E24B4A">${returns_.filter(r=>r.st==='recv'||r.st==='proc').length}</div><div class="sc-l">Активных возвратов</div></div>
+    <div class="sc"><div style="font-size:18px">⚠️</div><div class="sc-v" style="color:#EF9F27">${defects_.filter(d=>d.st==='open').length}</div><div class="sc-l">Открытых браков</div></div>
+    <div class="sc"><div style="font-size:18px">≠</div><div class="sc-v" style="color:#EF9F27">${discr_.filter(d=>d.st==='open').length}</div><div class="sc-l">Расхождений</div></div>
+  </div>
+  <div class="card" style="margin-bottom:11px"><div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:8px">Ближайшие поставки</div>
+    ${[{mp:'wb',r:'Москва и МО',d:'27 мая',v:'320 кор.',s:'transit'},{mp:'wb',r:'Казань',d:'28 мая',v:'180 кор.',s:'planned'},{mp:'ozon',r:'Москва (ФФ)',d:'29 мая',v:'95 кор.',s:'accepted'}].map(p=>{const pc={transit:['#E6F1FB','#185FA5','В пути'],planned:['#EEEDFE','#534AB7','Запланирована'],accepted:['#EAF3DE','#1D9E75','Принята']};const[sb_,sf_,sl_]=pc[p.s];return`<div class="trow">${mT(p.mp)}<span style="flex:1;font-size:12px;color:#1a1a2e">${p.r}</span><span style="font-size:12px;color:#6b7280">${p.d}</span><span style="font-size:12px;font-weight:600;color:#1a1a2e">${p.v}</span><span class="tag" style="background:${sb_};color:${sf_}">${sl_}</span></div>`;}).join('')}
+  </div>
+  <div class="card"><div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:10px">Быстрый доступ</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+    ${[['sup-returns','↩ Возвраты','#FBEAF0','#993556'],['sup-planning','📅 Планирование','#EEEDFE','#534AB7'],['sup-defects','⚠ Браки','#FAEEDA','#854F0B'],['sup-discr','≠ Расхождения','#EAF3DE','#0F6E56']].map(([id,l,bg,fg])=>`<div onclick="go('${id}',false)" style="background:${bg};color:${fg};border-radius:8px;padding:12px;text-align:center;cursor:pointer;font-size:12px;font-weight:600">${l}</div>`).join('')}
+  </div></div>`;
+}
+
+function pRet(){
+  const stM={recv:['#FAEEDA','#854F0B','Получен'],proc:['#E6F1FB','#185FA5','В обработке'],suppl:['#EEEDFE','#534AB7','У поставщика'],disp:['#F1EFE8','#5F5E5A','Утилизирован']};
+  const filt=retF==='all'?returns_:returns_.filter(r=>r.mp===retF);
+  return`<div class="ph"><span class="ph-t">Возвраты</span><button onclick="openAddReturn()">+ Возврат</button></div>
+  <div class="g4" style="margin-bottom:12px"><div class="sc"><div class="sc-v" style="color:#E24B4A">${returns_.length}</div><div class="sc-l">Всего возвратов</div></div><div class="sc"><div class="sc-v">${returns_.reduce((a,r)=>a+r.qty,0)}</div><div class="sc-l">Единиц товара</div></div><div class="sc"><div class="sc-v">${returns_.reduce((a,r)=>a+r.sum,0).toLocaleString('ru')} ₽</div><div class="sc-l">Сумма возвратов</div></div><div class="sc"><div class="sc-v" style="color:#EF9F27">${returns_.filter(r=>r.st==='recv'||r.st==='proc').length}</div><div class="sc-l">В обработке</div></div></div>
+  <div style="display:flex;gap:5px;margin-bottom:11px;flex-wrap:wrap">${[['all','Все'],['wb','WB'],['ozon','Ozon'],['ym','ЯМ'],['lamoda','Lamoda']].map(([k,l])=>{const m=k==='all'?{bg:'#f8f7ff',fg:'#6b7280'}:gm(k);const on=retF===k;return`<span style="padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid ${on?'transparent':'#e5e7eb'};background:${on?m.bg:'transparent'};color:${on?m.fg:'#6b7280'}" onclick="setRetF('${k}')">${l}</span>`;}).join('')}</div>
+  <div class="card" style="padding:0;overflow:hidden;overflow-x:auto">
+    <div class="tth" style="min-width:600px"><span style="width:75px">Дата</span><span style="width:85px">Артикул</span><span style="flex:1">Название</span><span style="width:65px">МП</span><span style="flex:1">Причина</span><span style="width:50px;text-align:center">Кол.</span><span style="width:80px;text-align:right">Сумма</span><span style="width:110px;text-align:center">Статус</span></div>
+    <div style="min-width:600px">${filt.map(r=>`<div class="trow"><span style="width:75px;font-size:11px;color:#9ca3af;flex-shrink:0">${r.date}</span><span style="width:85px;font-size:11px;font-family:monospace;color:#6b7280;flex-shrink:0">${r.art}</span><span style="flex:1;font-size:12px;color:#1a1a2e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.nm}</span><span style="width:65px;flex-shrink:0">${mT(r.mp)}</span><span style="flex:1;font-size:11px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.reason}</span><span style="width:50px;text-align:center;font-size:12px;font-weight:600;color:#1a1a2e;flex-shrink:0">${r.qty}</span><span style="width:80px;text-align:right;font-size:12px;font-weight:600;color:#1a1a2e;flex-shrink:0">${r.sum.toLocaleString('ru')} ₽</span><span style="width:110px;text-align:center;flex-shrink:0">${sb(r.st,stM)}</span></div>`).join('')}</div>
+  </div>`;
+}
+
+function pPlan(){
+  const stM={approved:['#EAF3DE','#3B6D11','Согласовано'],draft:['#EEEDFE','#534AB7','Черновик'],pending:['#FAEEDA','#854F0B','На согласовании']};
+  return`<div class="ph"><span class="ph-t">Планирование поставок</span><button onclick="openAddPlan()">+ Поставка</button></div>
+  <div class="tabs">
+    <div class="tbi${planT==='plan'?' on':''}" onclick="setPlanT('plan')">📅 План поставок</div>
+    <div class="tbi${planT==='chat'?' on':''}" onclick="setPlanT('chat')">💬 Чат</div>
+  </div>
+  ${planT==='chat'?chatW('sup-plan',420):`
+  <div class="g3" style="margin-bottom:12px"><div class="sc"><div class="sc-v" style="color:#534AB7">${planning_.length}</div><div class="sc-l">Поставок в плане</div></div><div class="sc"><div class="sc-v" style="color:#1D9E75">${planning_.filter(p=>p.st==='approved').length}</div><div class="sc-l">Согласовано</div></div><div class="sc"><div class="sc-v">${planning_.reduce((a,p)=>a+p.boxes,0)}</div><div class="sc-l">Коробок суммарно</div></div></div>
+  <div class="card" style="padding:0;overflow:hidden;overflow-x:auto">
+    <div class="tth" style="min-width:500px"><span style="flex:0 0 70px">МП</span><span style="flex:1">Регион</span><span style="flex:0 0 80px">Дата</span><span style="flex:0 0 80px;text-align:center">Коробок</span><span style="flex:0 0 60px;text-align:center">SKU</span><span style="flex:0 0 130px;text-align:center">Статус</span></div>
+    <div style="min-width:500px">${planning_.map(p=>`<div class="trow"><span style="flex:0 0 70px">${mT(p.mp)}</span><span style="flex:1;font-size:12px;color:#1a1a2e">${p.region}</span><span style="flex:0 0 80px;font-size:12px;color:#6b7280">${p.date}</span><span style="flex:0 0 80px;text-align:center;font-size:12px;font-weight:600;color:#1a1a2e">${p.boxes}</span><span style="flex:0 0 60px;text-align:center;font-size:12px;color:#6b7280">${p.skus}</span><span style="flex:0 0 130px;text-align:center">${sb(p.st,stM)}</span></div>`).join('')}</div>
+  </div>`}`;
+}
+
+function pDef(){
+  const stM={open:['#FCEBEB','#A32D2D','Открыт'],supplier:['#EEEDFE','#534AB7','У поставщика'],compensated:['#EAF3DE','#3B6D11','Компенсирован'],closed:['#F1EFE8','#5F5E5A','Закрыт']};
+  return`<div class="ph"><span class="ph-t">Браки при приёмке</span><button onclick="openAddDefect()">+ Зафиксировать брак</button></div>
+  <div class="g4" style="margin-bottom:12px"><div class="sc"><div class="sc-v" style="color:#E24B4A">${defects_.filter(d=>d.st==='open').length}</div><div class="sc-l">Открытых претензий</div></div><div class="sc"><div class="sc-v" style="color:#534AB7">${defects_.filter(d=>d.st==='supplier').length}</div><div class="sc-l">У поставщика</div></div><div class="sc"><div class="sc-v" style="color:#1D9E75">${defects_.filter(d=>d.st==='compensated').length}</div><div class="sc-l">Компенсировано</div></div><div class="sc"><div class="sc-v">${defects_.reduce((a,d)=>a+d.qty,0)}</div><div class="sc-l">Единиц с браком</div></div></div>
+  <div class="card" style="padding:0;overflow:hidden;overflow-x:auto">
+    <div class="tth" style="min-width:580px"><span style="width:75px">Дата</span><span style="width:80px">Партия</span><span style="flex:1">Артикул / Название</span><span style="width:65px">МП</span><span style="flex:2">Описание брака</span><span style="width:40px;text-align:center">Кол.</span><span style="width:120px;text-align:center">Статус</span></div>
+    <div style="min-width:580px">${defects_.map(d=>`<div class="trow"><span style="width:75px;font-size:11px;color:#9ca3af;flex-shrink:0">${d.date}</span><span style="width:80px;font-size:11px;font-family:monospace;color:#6b7280;flex-shrink:0">${d.batch}</span><div style="flex:1;min-width:0"><div style="font-size:11px;font-family:monospace;color:#6b7280">${d.art}</div><div style="font-size:12px;color:#1a1a2e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.nm}</div></div><span style="width:65px;flex-shrink:0">${mT(d.mp)}</span><span style="flex:2;font-size:11px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.desc}</span><span style="width:40px;text-align:center;font-size:13px;font-weight:700;color:#E24B4A;flex-shrink:0">${d.qty}</span><span style="width:120px;text-align:center;flex-shrink:0">${sb(d.st,stM)}</span></div>`).join('')}</div>
+  </div>`;
+}
+
+function pDiscr(){
+  const stM={open:['#FAEEDA','#854F0B','Открыто'],closed:['#EAF3DE','#3B6D11','Закрыто']};
+  return`<div class="ph"><span class="ph-t">Расхождения в поставках</span><button onclick="openAddDiscr()">+ Зафиксировать</button></div>
+  <div class="g3" style="margin-bottom:12px"><div class="sc"><div class="sc-v" style="color:#EF9F27">${discr_.filter(d=>d.st==='open').length}</div><div class="sc-l">Открытых расхождений</div></div><div class="sc"><div class="sc-v" style="color:#E24B4A">${discr_.filter(d=>d.diff<0).reduce((a,d)=>a+Math.abs(d.diff),0)}</div><div class="sc-l">Единиц недостача</div></div><div class="sc"><div class="sc-v" style="color:#185FA5">${discr_.filter(d=>d.diff>0).reduce((a,d)=>a+d.diff,0)}</div><div class="sc-l">Единиц избыток</div></div></div>
+  <div class="card" style="padding:0;overflow:hidden;overflow-x:auto">
+    <div class="tth" style="min-width:600px"><span style="width:75px">Дата</span><span style="flex:1">Поставка</span><span style="width:65px">МП</span><span style="width:80px;text-align:center">Ожидалось</span><span style="width:80px;text-align:center">Получено</span><span style="width:100px;text-align:center">Расхождение</span><span style="flex:2">Причина</span><span style="width:90px;text-align:center">Статус</span></div>
+    <div style="min-width:600px">${discr_.map(d=>`<div class="trow"><span style="width:75px;font-size:11px;color:#9ca3af;flex-shrink:0">${d.date}</span><span style="flex:1;font-size:12px;font-weight:600;color:#1a1a2e">${d.supply}</span><span style="width:65px;flex-shrink:0">${mT(d.mp)}</span><span style="width:80px;text-align:center;font-size:12px;color:#6b7280;flex-shrink:0">${d.exp}</span><span style="width:80px;text-align:center;font-size:12px;color:#6b7280;flex-shrink:0">${d.rec}</span><span style="width:100px;text-align:center;flex-shrink:0"><span style="font-size:14px;font-weight:700;color:${d.diff<0?'#E24B4A':d.diff>0?'#185FA5':'#1D9E75'}">${d.diff>0?'+':''}${d.diff===0?'—':d.diff}</span></span><span style="flex:2;font-size:11px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.reason}</span><span style="width:90px;text-align:center;flex-shrink:0">${sb(d.st,stM)}</span></div>`).join('')}</div>
+  </div>`;
+}
+
+function pSupTasks(){
+  const cols=[{k:'todo',l:'К выполнению',c:'#534AB7'},{k:'ip',l:'В процессе',c:'#EF9F27'},{k:'done',l:'Готово',c:'#1D9E75'}];
+  const supT=tasks_.filter(t=>t.proc==='supplies');
+  return`<div class="ph"><span class="ph-t">Задачи — Поставки</span><button onclick="openAddTask()">+ Задача</button></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+  ${cols.map(col=>{const items=supT.filter(t=>t.st===col.k);return`<div class="k-col"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:11px;font-weight:600;color:${col.c}">${col.l}</span><span style="font-size:10px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1px 7px;color:#6b7280">${items.length}</span></div>${items.map(t=>`<div class="k-card"><div style="font-size:12px;color:#1a1a2e;margin-bottom:5px">${t.nm}</div><div style="display:flex;align-items:center;gap:5px">${mT(t.mp)}<span style="font-size:10px;color:#9ca3af">${t.dl}</span></div></div>`).join('')}<div onclick="openAddTask()" style="border:1px dashed #d4d0ff;border-radius:8px;padding:8px;text-align:center;font-size:11px;color:#9ca3af;cursor:pointer;margin-top:4px">+ Добавить</div></div>`;}).join('')}
+  </div>`;
+}
+
+// ── REVIEWS ───────────────────────────────────────────────
+const rvTabBar=(active)=>`<div class="tabs"><div class="tbi${active==='reviews'?' on':''}" onclick="go('rv-reviews',false)">⭐ Отзывы</div><div class="tbi${active==='questions'?' on':''}" onclick="go('rv-questions',false)">❓ Вопросы</div><div class="tbi${active==='team'?' on':''}" onclick="go('rv-team',false)">💬 Чат команды</div></div>`;
+
+function pRev(){
+  const avg=(reviews_.reduce((a,r)=>a+r.rating,0)/reviews_.length).toFixed(1);
+  return`<div class="ph"><span class="ph-t">Отзывы и вопросы</span><div style="display:flex;align-items:center;gap:7px;font-size:11px;color:#6b7280"><div style="width:8px;height:8px;border-radius:50%;background:#1D9E75"></div>AI-агент активен</div></div>
+  <div class="g3" style="margin-bottom:12px"><div class="sc"><div class="sc-v" style="color:#E24B4A">${reviews_.filter(r=>r.st==='pending').length}</div><div class="sc-l">Ожидают ответа</div></div><div class="sc"><div class="sc-v" style="color:#EF9F27">${avg}</div><div class="sc-l">Средний рейтинг</div></div><div class="sc"><div class="sc-v" style="color:#1D9E75">${reviews_.filter(r=>r.st==='replied').length}</div><div class="sc-l">Отвечено</div></div></div>
+  ${rvTabBar('reviews')}
+  ${reviews_.map(r=>{const m=gm(r.mp);const ph=rvPhase[r.id]||'idle';let act='';
+    if(r.st==='pending'&&ph==='idle')act=`<div style="display:flex;gap:7px;margin-top:10px"><button class="ai-btn" onclick="aiR(${r.id},'rv')">✨ Ответить с AI</button><button onclick="manR(${r.id},'rv')">Вручную</button></div>`;
+    else if(ph==='gen')act=`<div style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11px;color:#6b7280"><div class="ai-spin"></div>Генерирую ответ...</div>`;
+    else if(ph==='draft')act=`<div style="margin-top:10px"><textarea id="rd-${r.id}" style="width:100%;font-size:12px;padding:8px;border:1px solid #d4d0ff;border-radius:7px;resize:vertical;min-height:65px">${rvDrafts[r.id]||''}</textarea><div style="display:flex;gap:6px;margin-top:6px"><button class="ai-btn" onclick="saveR(${r.id},'rv')">✓ Сохранить</button><button onclick="aiR(${r.id},'rv')">↺ Переформулировать</button></div></div>`;
+    return`<div class="rv-card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="color:#EF9F27;font-size:13px">${'★'.repeat(r.rating)+'☆'.repeat(5-r.rating)}</span><span class="tag" style="background:${m.bg};color:${m.fg}">${m.l}</span><span class="tag" style="${r.st==='pending'?'background:#FAEEDA;color:#854F0B':'background:#EAF3DE;color:#3B6D11'}">${r.st==='pending'?'Ожидает':'Отвечено'}</span></div><div style="font-size:13px;color:#1a1a2e;line-height:1.55;margin:7px 0">"${r.text}"</div><div style="font-size:11px;color:#9ca3af">${r.buyer} · ${r.date}</div>${r.st==='replied'?`<div style="margin-top:8px;padding:8px 10px;background:#f0fdf4;border-radius:7px;font-size:11px;color:#6b7280;border-left:3px solid #1D9E75"><span style="font-size:10px;color:#1D9E75;font-weight:600;display:block;margin-bottom:3px">Ваш ответ:</span>${r.reply}</div>`:act}</div>`;
+  }).join('')}`;
+}
+
+function pQ(){
+  return`<div class="ph"><span class="ph-t">Отзывы и вопросы</span></div>${rvTabBar('questions')}
+  ${questions_.map(q=>{const m=gm(q.mp);const ph=rvPhase['q'+q.id]||'idle';let act='';
+    if(q.st==='pending'&&ph==='idle')act=`<div style="display:flex;gap:7px;margin-top:10px"><button class="ai-btn" onclick="aiR(${q.id},'q')">✨ Ответить с AI</button><button onclick="manR(${q.id},'q')">Вручную</button></div>`;
+    else if(ph==='gen')act=`<div style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11px;color:#6b7280"><div class="ai-spin"></div>Генерирую...</div>`;
+    else if(ph==='draft')act=`<div style="margin-top:10px"><textarea id="qd-${q.id}" style="width:100%;font-size:12px;padding:8px;border:1px solid #d4d0ff;border-radius:7px;resize:vertical;min-height:55px">${rvDrafts['q'+q.id]||''}</textarea><div style="display:flex;gap:6px;margin-top:6px"><button class="ai-btn" onclick="saveR(${q.id},'q')">✓ Сохранить</button><button onclick="aiR(${q.id},'q')">↺ Снова</button></div></div>`;
+    return`<div class="rv-card"><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><span style="font-size:16px">❓</span><span class="tag" style="background:${m.bg};color:${m.fg}">${m.l}</span><span class="tag" style="${q.st==='pending'?'background:#FAEEDA;color:#854F0B':'background:#EAF3DE;color:#3B6D11'}">${q.st==='pending'?'Ожидает':'Отвечено'}</span></div><div style="font-size:13px;color:#1a1a2e;line-height:1.55;margin:6px 0">"${q.text}"</div><div style="font-size:11px;color:#9ca3af">${q.buyer} · ${q.date}</div>${q.st==='replied'?`<div style="margin-top:8px;padding:8px 10px;background:#f0fdf4;border-radius:7px;font-size:11px;color:#6b7280;border-left:3px solid #1D9E75"><span style="font-size:10px;color:#1D9E75;font-weight:600;display:block;margin-bottom:3px">Ваш ответ:</span>${q.reply}</div>`:act}</div>`;
+  }).join('')}`;
+}
+
+// ── НОВИНКИ ───────────────────────────────────────────────
+function pNewProd(){
+  const stages=['Идея','Аналитика','Закупка','Контент','Размещение','Реклама','Аналитика запуска'];
+  const stC=['#CECBF6','#B5D4F4','#FAC775','#F5C4B3','#C0DD97','#F7C1C1','#9FE1CB'];
+  const stT=['#3C3489','#0C447C','#633806','#712B13','#27500A','#791F1F','#085041'];
+  const pipeline=[
+    {nm:'Арт. 12041 — Летняя коллекция',stage:3,mp:'wb',dl:'30 мая'},
+    {nm:'Арт. 12042 — Новинка',stage:1,mp:'ozon',dl:'5 июня'},
+    {nm:'Арт. 12043 — Базовая линейка',stage:0,mp:'wb',dl:'10 июня'},
+    {nm:'Арт. 12044 — Коллаборация',stage:4,mp:'lamoda',dl:'28 мая'},
+    {nm:'Арт. 12045',stage:5,mp:'ozon',dl:'1 июня'},
+  ];
+  return`<div class="ph"><span class="ph-t">Новинки — пайплайн запуска</span><button onclick="openAddNewProd()">+ Артикул</button></div>
+  <div class="card" style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap">
+    ${stages.map((s,i)=>`<span class="tag" style="background:${stC[i]};color:${stT[i]};padding:4px 10px">${i+1}. ${s}</span>`).join('')}
+  </div>
+  ${pipeline.map(p=>`<div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:11px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <div style="flex:1;min-width:120px"><div style="font-size:13px;font-weight:500;color:#1a1a2e">${p.nm}</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">${p.dl} · ${gm(p.mp).l}</div></div>
+    <div style="display:flex;gap:3px">${stages.map((_,i)=>`<div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;background:${i===p.stage?stC[p.stage]:'#f3f4f6'};color:${i===p.stage?stT[p.stage]:'#9ca3af'};border:1px solid ${i===p.stage?stC[p.stage]:'#e5e7eb'}" title="${stages[i]}">${i+1}</div>`).join('')}</div>
+  </div>`).join('')}`;
+}
+
+// ── МАРКЕТИНГ ─────────────────────────────────────────────
+function pMkt(r){
+  const tabs=['mkt-wb','mkt-ozon','mkt-ym','mkt-lamoda','mkt-tg','mkt-vk','mkt-ig','mkt-site'];
+  const labels={wb:'WB',ozon:'Ozon',ym:'ЯМ',lamoda:'Lamoda',tg:'Telegram',vk:'VK',ig:'Instagram',site:'Сайт'};
+  const tabBar=`<div class="tabs">${tabs.map(t=>`<div class="tbi${r===t?' on':''}" onclick="go('${t}',false)">${labels[t.replace('mkt-','')]}</div>`).join('')}</div>`;
+  return`<div class="ph"><span class="ph-t">Маркетинг</span><button onclick="openAddTask()">+ Задача</button></div>${tabBar}
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="card">${chatW('general',280)}</div>
+    <div class="card"><div style="font-size:12px;font-weight:600;margin-bottom:10px">Задачи — ${labels[r.replace('mkt-','')]}</div>
+      <div class="k-card"><div style="font-size:12px;color:#1a1a2e;margin-bottom:5px">Настроить автобид артикул 12034</div><div style="display:flex;gap:5px"><span class="tag" style="background:#FCEBEB;color:#993C1D">Срочно</span></div></div>
+      <div class="k-card"><div style="font-size:12px;color:#1a1a2e;margin-bottom:5px">Проанализировать CPM за неделю</div><div style="display:flex;gap:5px"><span class="tag" style="background:#EEEDFE;color:#534AB7">Аналитика</span></div></div>
+      <div onclick="openAddTask()" style="border:1px dashed #d4d0ff;border-radius:8px;padding:8px;text-align:center;font-size:11px;color:#9ca3af;cursor:pointer;margin-top:6px">+ Добавить задачу</div>
+    </div>
+  </div>`;
+}
+
+// ── КОНТЕНТ ───────────────────────────────────────────────
+function pContent(){
+  const cols=[{k:'todo',l:'К выполнению',c:'#534AB7'},{k:'ip',l:'В процессе',c:'#EF9F27'},{k:'done',l:'Готово',c:'#1D9E75'}];
+  const contT=[
+    {nm:'Фотосъёмка арт. 12040',mp:'wb',dl:'28 мая',st:'todo'},{nm:'SEO-карточки 5 новинок',mp:'ozon',dl:'30 мая',st:'todo'},
+    {nm:'Видеообзор летняя коллекция',mp:'wb',dl:'1 июня',st:'ip'},{nm:'Инфографика WB карточки',mp:'wb',dl:'29 мая',st:'ip'},
+    {nm:'Баннеры для майских акций',mp:'ozon',dl:'20 мая',st:'done'},
+  ];
+  return`<div class="ph"><span class="ph-t">Контент</span><button onclick="openAddTask()">+ Задача</button></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+  ${cols.map(col=>{const items=contT.filter(t=>t.st===col.k);return`<div class="k-col"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:11px;font-weight:600;color:${col.c}">${col.l}</span><span style="font-size:10px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1px 7px;color:#6b7280">${items.length}</span></div>${items.map(t=>`<div class="k-card"><div style="font-size:12px;color:#1a1a2e;margin-bottom:5px">${t.nm}</div><div style="display:flex;align-items:center;gap:5px">${mT(t.mp)}<span style="font-size:10px;color:#9ca3af">${t.dl}</span></div></div>`).join('')}<div onclick="openAddTask()" style="border:1px dashed #d4d0ff;border-radius:8px;padding:8px;text-align:center;font-size:11px;color:#9ca3af;cursor:pointer;margin-top:4px">+ Добавить</div></div>`;}).join('')}
+  </div>`;
+}
+
+// ── ХАБ ЗАДАЧ ─────────────────────────────────────────────
+function pTaskHub(){
+  const cols=[{k:'todo',l:'К выполнению',c:'#534AB7'},{k:'ip',l:'В процессе',c:'#EF9F27'},{k:'done',l:'Готово',c:'#1D9E75'}];
+  return`<div class="ph"><span class="ph-t">Хаб задач</span><button onclick="openAddTask()">+ Задача</button></div>
+  <div class="g4" style="margin-bottom:12px">
+    <div class="sc"><div class="sc-v">${tasks_.length}</div><div class="sc-l">Всего задач</div></div>
+    <div class="sc"><div class="sc-v" style="color:#E24B4A">${tasks_.filter(t=>t.st==='todo').length}</div><div class="sc-l">К выполнению</div></div>
+    <div class="sc"><div class="sc-v" style="color:#EF9F27">${tasks_.filter(t=>t.st==='ip').length}</div><div class="sc-l">В процессе</div></div>
+    <div class="sc"><div class="sc-v" style="color:#1D9E75">${tasks_.filter(t=>t.st==='done').length}</div><div class="sc-l">Готово</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+  ${cols.map(col=>{const items=tasks_.filter(t=>t.st===col.k);return`<div class="k-col"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:11px;font-weight:600;color:${col.c}">${col.l}</span><span style="font-size:10px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:1px 7px;color:#6b7280">${items.length}</span></div>${items.map(t=>`<div class="k-card"><div style="font-size:12px;color:#1a1a2e;margin-bottom:5px">${t.nm}</div><div style="display:flex;align-items:center;gap:5px">${mT(t.mp)}<span style="font-size:10px;color:#9ca3af">${t.dl}</span>${avE(t.resp,18)}</div></div>`).join('')}<div onclick="openAddTask()" style="border:1px dashed #d4d0ff;border-radius:8px;padding:8px;text-align:center;font-size:11px;color:#9ca3af;cursor:pointer;margin-top:4px">+ Добавить</div></div>`;}).join('')}
+  </div>`;
+}
+
+// ── ХАБ ЧАТОВ ─────────────────────────────────────────────
+function pChatHub(){
+  const chList=[{id:'general',nm:'# общий-чат',last:'Алексей: Уже загрузил в базу 👍'},{id:'wb-msk',nm:'# wb-москва',last:'Дмитрий: Завтра отгрузка...'},{id:'wb-kaz',nm:'# wb-казань',last:'Дмитрий: 🚨 WB-Казань критично!'},{id:'rv-team',nm:'# отзывы-команда',last:'Елена: 3 негативных...'}];
+  return`<div class="ph"><span class="ph-t">Хаб чатов</span></div>
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:12px;height:500px">
+    <div style="display:flex;flex-direction:column;gap:5px">
+      ${chList.map(c=>`<div onclick="go('${c.id}',false)" style="background:#f8f7ff;border:1px solid #e5e7eb;border-radius:8px;padding:9px 11px;cursor:pointer"><div style="font-size:12px;font-weight:600;color:#1a1a2e">${c.nm}</div><div style="font-size:10px;color:#9ca3af;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.last}</div></div>`).join('')}
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">${chatW('general',460)}</div>
+  </div>`;
+}
+
+// ── БАЗА ЗНАНИЙ ───────────────────────────────────────────
+function pKB(){
+  const kb={
+    'Поставки':[{nm:'Регламент поставок WB.pdf',tp:'pdf',sz:'1.8 МБ',mod:'20 мая'},{nm:'Инструкция поставок Ozon.pdf',tp:'pdf',sz:'2.1 МБ',mod:'15 мая'},{nm:'Порядок работы с возвратами.docx',tp:'docx',sz:'645 КБ',mod:'10 мая'}],
+    'Реклама':[{nm:'Гайд по рекламе WB.pdf',tp:'pdf',sz:'3.4 МБ',mod:'22 мая'},{nm:'Шаблоны рекламных кампаний.xlsx',tp:'xlsx',sz:'1.2 МБ',mod:'18 мая'}],
+    'Контент':[{nm:'Шаблон карточки товара.docx',tp:'docx',sz:'512 КБ',mod:'25 мая'},{nm:'SEO-чеклист.pdf',tp:'pdf',sz:'890 КБ',mod:'21 мая'},{nm:'Фотостандарты 2025.pdf',tp:'pdf',sz:'4.7 МБ',mod:'12 мая'}],
+    'Продажи':[{nm:'Скрипты ответов на отзывы.docx',tp:'docx',sz:'324 КБ',mod:'23 мая'},{nm:'FAQ покупателей.docx',tp:'docx',sz:'280 КБ',mod:'19 мая'}],
+    'Аналитика':[{nm:'Шаблон еженедельного отчёта.xlsx',tp:'xlsx',sz:'2.3 МБ',mod:'24 мая'},{nm:'KPI метрики маркетплейсов.xlsx',tp:'xlsx',sz:'1.6 МБ',mod:'17 мая'}],
+  };
+  const icons={pdf:'📄',docx:'📝',xlsx:'📊'};
+  return`<div class="ph"><span class="ph-t">База знаний</span><button onclick="alert('Загрузите файл через интерфейс GitHub')">+ Документ</button></div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:11px">
+  ${Object.entries(kb).map(([cat,files])=>`<div class="card"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;margin-bottom:10px">${cat}</div>
+    ${files.map(f=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f3f4f6"><span style="font-size:16px">${icons[f.tp]||'📁'}</span><div style="flex:1;min-width:0"><div style="font-size:12px;color:#1a1a2e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.nm}</div><div style="font-size:10px;color:#9ca3af">${f.sz} · ${f.mod}</div></div><button style="font-size:10px;padding:3px 8px">Открыть</button></div>`).join('')}
+  </div>`).join('')}
+  </div>`;
+}
+
+// ── УВЕДОМЛЕНИЯ ───────────────────────────────────────────
+function pNotif(){
+  const icons={task:'🎯',message:'💬',document:'📄'};
+  return`<div class="ph"><span class="ph-t">Уведомления</span><button onclick="markAllRead()">Отметить все прочитанными</button></div>
+  <div class="card" style="padding:0;overflow:hidden">
+  ${notifs_.map((n,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #f3f4f6;background:${n.rd?'#fff':'#fafbff'}" id="notif-${n.id}">
+    <span style="font-size:18px">${icons[n.tp]||'🔔'}</span>
+    <div style="flex:1"><div style="font-size:12.5px;color:#1a1a2e${n.rd?'':';font-weight:500'}">${n.tx}</div></div>
+    <span style="font-size:11px;color:#9ca3af;white-space:nowrap">${n.tm}</span>
+    ${!n.rd?`<button onclick="readNotif(${n.id})" style="font-size:10px;padding:3px 8px">✓</button>`:''}
+  </div>`).join('')}
+  ${notifs_.length===0?'<div style="padding:40px;text-align:center;color:#9ca3af">Нет уведомлений</div>':''}
+  </div>`;
+}
+
+// ── ИНТЕГРАЦИИ ────────────────────────────────────────────
+function pInt(){
+  const ints=[
+    {nm:'Яндекс Диск',icon:'☁️',bg:'#FAEEDA',tag:'Подключён',tBg:'#EAF3DE',tFg:'#3B6D11',desc:'Акты, накладные, фото товаров',acts:['Открыть','Синхронизировать']},
+    {nm:'Canva',icon:'🎨',bg:'#E1F5EE',tag:'Подключён',tBg:'#EAF3DE',tFg:'#3B6D11',desc:'Баннеры, карточки, инфографика',acts:['Создать баннер','Мои проекты']},
+    {nm:'МойСклад',icon:'📦',bg:'#FAECE7',tag:'Подключить',tBg:'#FAEEDA',tFg:'#854F0B',desc:'Остатки, поставки, возвраты',acts:['Подключить','Подробнее']},
+    {nm:'WB Partners',icon:'🛍️',bg:'#FBEAF0',tag:'Ожидает',tBg:'#EEEDFE',tFg:'#534AB7',desc:'Кабинет продавца WB',acts:['Настроить']},
+    {nm:'Ozon Seller',icon:'🛒',bg:'#E6F1FB',tag:'Ожидает',tBg:'#EEEDFE',tFg:'#534AB7',desc:'Кабинет продавца Ozon',acts:['Настроить']},
+    {nm:'ЯМ API',icon:'🚚',bg:'#FAEEDA',tag:'Не подключён',tBg:'#FCEBEB',tFg:'#A32D2D',desc:'Яндекс Маркет',acts:['Настроить']},
+  ];
+  return`<div class="ph"><span class="ph-t">Интеграции</span></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:11px">
+  ${ints.map(it=>`<div class="card"><div style="font-size:22px;margin-bottom:8px">${it.icon}</div><div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:3px">${it.nm}</div><span class="tag" style="background:${it.tBg};color:${it.tFg};margin-bottom:8px;display:inline-flex">${it.tag}</span><div style="font-size:11px;color:#6b7280;margin-bottom:10px">${it.desc}</div><div style="display:flex;gap:6px;flex-wrap:wrap">${it.acts.map(a=>`<button style="font-size:11px;padding:4px 10px">${a}</button>`).join('')}</div></div>`).join('')}
+  </div>`;
+}
+
+// ── ПРОФИЛЬ ───────────────────────────────────────────────
+function pProf(){
+  return`<div class="ph"><span class="ph-t">Профиль и команда</span></div>
+  <div class="tabs" id="prof-tabs">
+    <div class="tbi on" onclick="switchProfTab('myprofile',this)">👤 Мой профиль</div>
+    <div class="tbi" onclick="switchProfTab('team',this)">👥 Команда</div>
+  </div>
+  <div id="prof-content">${renderProfMyProfile()}</div>`;
+}
+function switchProfTab(tab,el){
+  document.querySelectorAll('#prof-tabs .tbi').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('prof-content').innerHTML=tab==='myprofile'?renderProfMyProfile():renderProfTeam();
+}
+function renderProfMyProfile(){
+  return`<div style="display:grid;grid-template-columns:200px 1fr;gap:14px">
+    <div class="card" style="text-align:center">
+      <div style="display:flex;justify-content:center;margin-bottom:10px"><div class="av" style="width:54px;height:54px;background:#CECBF6;color:#3C3489;font-size:18px">АП</div></div>
+      <div style="font-size:14px;font-weight:600;color:#1a1a2e">Алексей Петров</div>
+      <div style="font-size:11px;color:#6b7280;margin:3px 0 7px">Руководитель</div>
+      <span class="tag" style="background:#EEEDFE;color:#534AB7">Администратор</span>
+      <div style="display:flex;align-items:center;justify-content:center;gap:5px;margin:10px 0 12px"><div style="width:7px;height:7px;border-radius:50%;background:#1D9E75"></div><span style="font-size:11px;color:#1D9E75">Онлайн</span></div>
+      <button onclick="alert('Редактирование профиля')" style="width:100%">Редактировать</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;margin-bottom:10px">Контакты</div>
+        <div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #f3f4f6"><span>✉️</span><span style="font-size:12px;color:#1a1a2e">a.petrov@workspace.ru</span></div>
+        <div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #f3f4f6"><span>📱</span><span style="font-size:12px;color:#1a1a2e">+7 985 123-45-67</span></div>
+        <div style="display:flex;gap:8px;padding:6px 0"><span>✈️</span><span style="font-size:12px;color:#1a1a2e">@a_petrov</span></div>
+      </div>
+      <div class="card">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;margin-bottom:10px">Настройки уведомлений</div>
+        ${[['Новые задачи',true],['Сообщения в чате',true],['Новости компании',true],['KPI-дайджест (еженедельно)',false]].map(([l,c])=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f3f4f6"><span style="font-size:12px;color:#1a1a2e">${l}</span><input type="checkbox" ${c?'checked':''}></div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+function renderProfTeam(){
+  return`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+  ${emps.map((e,i)=>{const[bg,fg]=avC[i%avC.length].split(':');return`<div class="card" style="text-align:center">
+    <div style="display:flex;justify-content:center;margin-bottom:8px"><div class="av" style="width:42px;height:42px;background:${bg};color:${fg};font-size:14px">${e.in}</div></div>
+    <div style="font-size:13px;font-weight:600;color:#1a1a2e">${e.nm}</div>
+    <div style="font-size:11px;color:#6b7280;margin:2px 0 4px">${e.role}</div>
+    <div style="font-size:10px;color:#9ca3af;margin-bottom:6px">${e.dept}</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:4px"><div style="width:6px;height:6px;border-radius:50%;background:${e.online?'#1D9E75':'#d1d5db'}"></div><span style="font-size:10px;color:${e.online?'#1D9E75':'#9ca3af'}">${e.online?'Онлайн':'Офлайн'}</span></div>
+  </div>`;}).join('')}
+  </div>`;
+}
+
+// ── AI HANDLERS ───────────────────────────────────────────
+async function aiR(id,type){
+  const k=type==='q'?'q'+id:id;rvPhase[k]='gen';rC();
+  try{
+    const item=type==='q'?questions_.find(x=>x.id===id):reviews_.find(x=>x.id===id);
+    const mpN={wb:'Wildberries',ozon:'Ozon',ym:'Яндекс Маркет',lamoda:'Lamoda'}[item.mp]||item.mp;
+    const pr=type==='q'?`Напиши ответ продавца на маркетплейсе ${mpN} на вопрос: "${item.text}". 1-2 предложения. Только текст.`:`Напиши ответ продавца на маркетплейсе ${mpN} на отзыв (${item.rating}/5): "${item.text}". 2-3 предложения. Только текст.`;
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:pr}]})});
+    const data=await res.json();
+    rvDrafts[k]=data.content?.[0]?.text||'Ошибка генерации';
+  }catch(e){rvDrafts[k]='Ошибка соединения. Проверьте подключение.';}
+  rvPhase[k]='draft';rC();
+}
+function manR(id,t){const k=t==='q'?'q'+id:id;rvDrafts[k]='';rvPhase[k]='draft';rC();}
+function saveR(id,t){
+  const k=t==='q'?'q'+id:id;
+  const el=document.getElementById((t==='q'?'qd-':'rd-')+id);
+  const txt=el?el.value:(rvDrafts[k]||'');
+  if(t==='q'){const q=questions_.find(x=>x.id===id);if(q){q.reply=txt;q.st='replied';}}
+  else{const r=reviews_.find(x=>x.id===id);if(r){r.reply=txt;r.st='replied';}}
+  delete rvPhase[k];delete rvDrafts[k];rC();rSB();
+}
+
+// ── STATE SETTERS (все через window) ──────────────────────
+function setRetF(f){retF=f;rC();}
+function setPlanT(t){planT=t;rC();}
+function markAllRead(){notifs_.forEach(n=>n.rd=true);rC();rSB();}
+function readNotif(id){const n=notifs_.find(x=>x.id===id);if(n)n.rd=true;rC();rSB();}
+function switchProfTab(tab,el){
+  document.querySelectorAll('#prof-tabs .tbi').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('prof-content').innerHTML=tab==='myprofile'?renderProfMyProfile():renderProfTeam();
+}
+
+// ── MODAL ─────────────────────────────────────────────────
+let modalAction=null;
+function openModal(title,bodyHtml,onSave){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-body').innerHTML=bodyHtml;
+  document.getElementById('modal-bg').classList.add('open');
+  modalAction=onSave;
+}
+function closeModal(){document.getElementById('modal-bg').classList.remove('open');modalAction=null;}
+function saveModal(){if(modalAction)modalAction();closeModal();}
+
+function openAddTask(){
+  openModal('Новая задача',`
+    <label>Название</label><input type="text" id="m-nm" placeholder="Что нужно сделать...">
+    <label>Маркетплейс</label>
+    <select id="m-mp"><option value="wb">WB</option><option value="ozon">Ozon</option><option value="ym">ЯМ</option><option value="lamoda">Lamoda</option></select>
+    <label>Дедлайн</label><input type="text" id="m-dl" placeholder="напр. 30 мая">
+    <label>Раздел</label>
+    <select id="m-proc"><option value="supplies">Поставки</option><option value="marketing">Маркетинг</option><option value="content">Контент</option><option value="reviews">Отзывы</option></select>
+  `,()=>{
+    const nm=document.getElementById('m-nm').value.trim();
+    if(!nm)return;
+    tasks_.push({id:Date.now(),nm,mp:document.getElementById('m-mp').value,dl:document.getElementById('m-dl').value||'—',st:'todo',resp:0,proc:document.getElementById('m-proc').value});
+    rC();rSB();
+  });
+}
+
+function openAddReturn(){
+  openModal('Новый возврат',`
+    <label>Название товара</label><input type="text" id="m-nm" placeholder="Платье в горошек...">
+    <label>Артикул</label><input type="text" id="m-art" placeholder="WB-123456">
+    <label>Маркетплейс</label>
+    <select id="m-mp"><option value="wb">WB</option><option value="ozon">Ozon</option><option value="ym">ЯМ</option><option value="lamoda">Lamoda</option></select>
+    <label>Причина</label><input type="text" id="m-reason" placeholder="Не подошёл размер...">
+    <label>Количество</label><input type="text" id="m-qty" placeholder="1">
+  `,()=>{
+    const nm=document.getElementById('m-nm').value.trim();
+    if(!nm)return;
+    const d=new Date();
+    returns_.push({id:Date.now(),date:`${d.getDate()} ${['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'][d.getMonth()]}`,art:document.getElementById('m-art').value||'—',nm,mp:document.getElementById('m-mp').value,reason:document.getElementById('m-reason').value||'—',qty:parseInt(document.getElementById('m-qty').value)||1,sum:0,st:'recv'});
+    rC();
+  });
+}
+
+function openAddDefect(){
+  openModal('Зафиксировать брак',`
+    <label>Название товара</label><input type="text" id="m-nm" placeholder="Платье в горошек...">
+    <label>Артикул</label><input type="text" id="m-art" placeholder="WB-123456">
+    <label>Описание брака</label><input type="text" id="m-desc" placeholder="Зацепка на рукаве...">
+    <label>Маркетплейс</label>
+    <select id="m-mp"><option value="wb">WB</option><option value="ozon">Ozon</option><option value="ym">ЯМ</option><option value="lamoda">Lamoda</option></select>
+    <label>Количество</label><input type="text" id="m-qty" placeholder="1">
+  `,()=>{
+    const nm=document.getElementById('m-nm').value.trim();
+    if(!nm)return;
+    const d=new Date();
+    const dateStr=`${d.getDate()} ${['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'][d.getMonth()]}`;
+    defects_.push({id:Date.now(),date:dateStr,batch:'П-2025-06',art:document.getElementById('m-art').value||'—',nm,mp:document.getElementById('m-mp').value,qty:parseInt(document.getElementById('m-qty').value)||1,desc:document.getElementById('m-desc').value||'—',st:'open'});
+    rC();
+  });
+}
+
+function openAddDiscr(){
+  openModal('Зафиксировать расхождение',`
+    <label>Поставка</label><input type="text" id="m-supply" placeholder="WB-МСК-320">
+    <label>Маркетплейс</label>
+    <select id="m-mp"><option value="wb">WB</option><option value="ozon">Ozon</option><option value="ym">ЯМ</option><option value="lamoda">Lamoda</option></select>
+    <label>Ожидалось (шт)</label><input type="text" id="m-exp" placeholder="320">
+    <label>Получено (шт)</label><input type="text" id="m-rec" placeholder="318">
+    <label>Причина</label><input type="text" id="m-reason" placeholder="2 коробки повреждены...">
+  `,()=>{
+    const supply=document.getElementById('m-supply').value.trim();
+    if(!supply)return;
+    const exp=parseInt(document.getElementById('m-exp').value)||0;
+    const rec=parseInt(document.getElementById('m-rec').value)||0;
+    const d=new Date();
+    discr_.push({id:Date.now(),date:`${d.getDate()} ${['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'][d.getMonth()]}`,supply,mp:document.getElementById('m-mp').value,exp,rec,diff:rec-exp,reason:document.getElementById('m-reason').value||'—',st:'open'});
+    rC();
+  });
+}
+
+function openAddPlan(){
+  openModal('Новая поставка',`
+    <label>Регион</label><input type="text" id="m-region" placeholder="Москва и МО">
+    <label>Маркетплейс</label>
+    <select id="m-mp"><option value="wb">WB</option><option value="ozon">Ozon</option><option value="ym">ЯМ</option><option value="lamoda">Lamoda</option></select>
+    <label>Дата</label><input type="text" id="m-date" placeholder="15 июня">
+    <label>Количество коробок</label><input type="text" id="m-boxes" placeholder="100">
+    <label>Количество SKU</label><input type="text" id="m-skus" placeholder="5">
+  `,()=>{
+    const region=document.getElementById('m-region').value.trim();
+    if(!region)return;
+    planning_.push({id:Date.now(),mp:document.getElementById('m-mp').value,region,date:document.getElementById('m-date').value||'—',boxes:parseInt(document.getElementById('m-boxes').value)||0,skus:parseInt(document.getElementById('m-skus').value)||0,st:'draft',ai:0});
+    rC();
+  });
+}
+
+function openAddNewProd(){
+  openModal('Новый артикул',`
+    <label>Название / артикул</label><input type="text" id="m-nm" placeholder="Арт. 12050 — Летнее платье">
+    <label>Маркетплейс</label>
+    <select id="m-mp"><option value="wb">WB</option><option value="ozon">Ozon</option><option value="ym">ЯМ</option><option value="lamoda">Lamoda</option></select>
+    <label>Дедлайн запуска</label><input type="text" id="m-dl" placeholder="1 июля">
+  `,()=>{
+    alert('Артикул добавлен! В реальной версии данные сохранятся.');
+    rC();
+  });
+}
+
+// ── MOBILE ────────────────────────────────────────────────
+function toggleSB(){
+  const sb=document.getElementById('sb');
+  const ov=document.getElementById('overlay');
+  sb.classList.toggle('open');
+  ov.style.display=sb.classList.contains('open')?'block':'none';
+}
+function closeSB(){
+  document.getElementById('sb').classList.remove('open');
+  document.getElementById('overlay').style.display='none';
+}
+function mobAct(btn){document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+
+// ── INIT ──────────────────────────────────────────────────
+rSB();rC();
+</script>
+</body>
+</html>
